@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>计算器</title>
+		<style>
+			section,header,nav,main,aside,footer{
+				margin: 0 auto;
+			}
+			section{
+				width: 700px;
+				height: 750px;
+				margin: 0 auto;
+				background-color: lightgray;
+			}
+			header{
+				width: 600px;
+				height: 100px;
+				
+			}
+			section section{
+				width: 600px;
+				height: 500px;
+				background-color: black;
+			}
+			footer{
+				width: 600px;
+				height: 100px;
+			}
+			footer p{
+				color: #000000;
+				font-size: 15px;
+			}
+			button{
+				width: 100%;
+				height: 100%;
+				font-size: 20px;
+			}
+			#clear{
+				width: 450px;
+				height: 100px;
+				float: left;
+			}
+			#clear button{
+				background-color: burlywood;
+			}
+			#number{
+				height: 400px;
+				width: 450px;
+				float: left;
+			}
+			#number button{
+				background-color: white;
+			}
+			#operation{
+				height: 500px;
+				width: 150px;
+			}
+			#operation button{
+				background-color: antiquewhite;
+			}
+			#solution{
+				background-color: black;
+				width: 100%;
+				height: 100%;
+			}
+			#temp{
+				font-size: 15px;
+				text-align: right;
+				line-height: 40px;
+				color: white;
+			}
+			#result{
+				font-size: 30px; 
+				text-align: right; 
+				line-height: 0px;
+				color: white;
+			}
+			@media screen and (max-width: 1025px)  {
+				section,header,section section,main,aside,footer{
+					width: 100%;
+				}
+				#clear,#number{
+					width: 75%;
+				}
+				#operation{
+					width: 25%;
+				}
+			}
+		</style>
+	</head>
+	
+	
+	<body>
+	<section>
+		<header>
+			<div id="solution">
+				<p id="temp">&nbsp;</p>
+				<p id="result">0</p>
+			</div>
+		</header>
+		<section>
+			<nav>
+				<table id="clear" border="0px">
+					<tr>
+						<td><button type="button" onclick="AC('AC')">AC</button></td>
+						<td><button type="button" onclick="AC('CE')">CE</button></td>
+						<td><button type="button" onclick="AC('Backspace')">Backspace</button></td>
+					</tr>
+				</table>
+			</nav>
+			<main>
+				<table id = "number" border="0px">
+					<tr>
+						<td><button type="button" onclick="change('1')">1</button></td>
+						<td><button type="button" onclick="change('2')">2</button></td>
+						<td><button type="button" onclick="change('3')">3</button></td>
+					</tr>
+					<tr>
+						<td><button type="button" onclick="change('4')">4</button></td>
+						<td><button type="button" onclick="change('5')">5</button></td>
+						<td><button type="button" onclick="change('6')">6</button></td>
+					</tr>
+					<tr>
+						<td><button type="button" onclick="change('7')">7</button></td>
+						<td><button type="button" onclick="change('8')">8</button></td>
+						<td><button type="button" onclick="change('9')">9</button></td>
+					</tr>
+					<tr>
+						<td><button type="button" style="text-decoration: underline;" onclick="negative()">+</button></td>
+						<td><button type="button" value="0" onclick="change('0')">0</button></td>
+						<td><button type="button" onclick="point()">.</button></td>
+					</tr>
+				</table>
+			</main>
+			<aside>
+				<table id = "operation">
+					<tr><td><button type="button" onclick="operation('/')">/</button></td></tr>
+					<tr><td><button type="button" onclick="operation('*')">*</button></td></tr>
+					<tr><td><button type="button" onclick="operation('-')">-</button></td></tr>
+					<tr><td><button type="button" onclick="operation('+')">+</button></td></tr>
+					<tr><td><button type="button" onclick="solution()">=</button></td></tr>
+				</table>
+			</aside>
+		</section>
+		
+		<footer>
+			<p>简介：一款简易计算器，支持常规的加减乘除，连加，连减，加减乘除混合计算</p>
+			<p>功能介绍：AC{重置归零};&nbsp;CE{临时数字归零};&nbsp;+-*/{加减乘除运算};&nbsp;<b>.</b>{加小数点};&nbsp;<u>+</u>{加负号}</p>
+			<p style="color: red;">注意：切换其他分辨率设备时需要刷新才有点击效果</p>
+		</footer>
+	</section>
+	
+	<script type="text/javascript">
+		var results = 0;
+		var init = false;
+		var solution_init = false;
+		
+		var event1 = {
+			idname:"clear",
+			eve:[
+				 {evename:"touchstart", color:"darkcyan"},
+				 {evename:"touchend", color:"burlywood"}
+				]
+		};
+		var event2 = {
+			idname:"number",
+			eve:[
+				 {evename:"touchstart", color:"darkgrey"},
+				 {evename:"touchend", color:"white"}
+				]
+		};
+		var event3 = {
+			idname:"operation",
+			eve:[
+				 {evename:"touchstart", color:"cornflowerblue"},
+				 {evename:"touchend", color:"antiquewhite"}
+				]
+		};
+		var event4 = {
+			idname:"clear",
+			eve:[
+				 {evename:"mouseover",color:"darkcyan"},
+				 {evename:"mousedown",color:"aquamarine"},
+				 {evename:"mouseup",color:"darkcyan"},
+				 {evename:"mouseout",color:"burlywood"}
+				]
+		};
+		var event5 = {
+			idname:"number",
+			eve:[
+				 {evename:"mouseover",color:"gainsboro"},
+				 {evename:"mousedown",color:"darkgrey"},
+				 {evename:"mouseup",color:"gainsboro"},
+				 {evename:"mouseout",color:"white"}
+				]
+		};
+		var event6 = {
+			idname:"operation",
+			eve:[
+				 {evename:"mouseover",color:"cornflowerblue"},
+				 {evename:"mousedown",color:"lightblue"},
+				 {evename:"mouseup",color:"cornflowerblue"},
+				 {evename:"mouseout",color:"antiquewhite"}
+				]
+		};
+		var phoneEvents = [event1,event2,event3];
+		var pcEvents = [event4,event5,event6];
+		
+		if(window.screen.width > 1024) listen(pcEvents);
+		listen(phoneEvents);
+		
+		
+		function AC(command){
+		
+			var x = document.getElementById("result").innerHTML;
+			if(command == "AC"){
+				document.getElementById("temp").innerHTML = "&nbsp";
+				x = "0";
+				results = 0;
+				init = false;
+			}
+			else if (command == "CE"){
+				x = "0";
+			}
+			else if(x.length > 1){
+				if(x.length == 2 && x.charAt(0)=="-") x = "0";
+				else x = x.substring(0,x.length-1);
+			}
+			else if(x != "0") x = "0";
+			document.getElementById("result").innerHTML = x;
+		}
+		
+		
+		function change(num){
+			var x = document.getElementById("result").innerHTML;
+			if(init || solution_init) x = "0";
+			if(x == "0") x = num;
+			else x += num;
+			document.getElementById("result").innerHTML = x;
+			init = false;
+			solution_init = false
+		}
+		
+		function negative(){
+			var x = document.getElementById("result").innerHTML;
+			if(init || solution_init) x = "0";
+			if(x != "0"){
+				if(x.charAt(0)=='-') x = x.substring(1);
+				else x = "-" + x;
+				document.getElementById("result").innerHTML = x;
+			}
+			solution_init = false
+		}
+		
+		function point(){
+			var x = document.getElementById("result").innerHTML;
+			if(init || solution_init) x = "0";
+			if(x.indexOf(".")=="-1") x += ".";
+			document.getElementById("result").innerHTML = x;
+			init = false;
+			solution_init = false
+		}
+		
+		function calculate(){
+			var x = document.getElementById("temp").innerHTML;
+			var y = document.getElementById("result").innerHTML;
+			if(x.charAt(x.length-1) == '+') results += Number(y);
+			else if(x.charAt(x.length-1) == '-') results -= Number(y);
+			else if(x.charAt(x.length-1) == '*') results *= Number(y);
+			else if(x.charAt(x.length-1) == '/') results /= Number(y);
+			else results = Number(y);
+		}
+		
+		function operation(symbol){
+			if(!init){
+				init = true;
+				calculate();
+				if(document.getElementById("temp").innerHTML=="&nbsp") document.getElementById("temp").innerHTML += "0";
+				document.getElementById("temp").innerHTML += document.getElementById("result").innerHTML + symbol;
+				document.getElementById("result").innerHTML = results.toString();
+			}
+			else{
+				var x = document.getElementById("temp").innerHTML;
+				if(x=="&nbsp") x += "0";
+				x = x.substring(0,x.length-1) + symbol;
+				document.getElementById("temp").innerHTML = x;
+			}
+		}
+		
+		function solution(){
+			calculate();
+			document.getElementById("result").innerHTML = results;
+			document.getElementById("temp").innerHTML = "&nbsp";
+			init = false;
+			solution_init = true;
+		}
+		
+		function changeColor(color){
+			event.target.style.backgroundColor = color;
+		}
+		
+		function listen(events){	
+			for (let j = 0; j < events.length; j++){
+				for (let i = 0; i < document.getElementById(events[j].idname).getElementsByTagName("button").length; i++) {
+					for(let p = 0; p < events[j].eve.length; p++){
+						document.getElementById(events[j].idname).getElementsByTagName("button")[i].addEventListener(events[j].eve[p].evename,function(){changeColor(events[j].eve[p].color)});
+					}
+				}
+			}
+		}
+		
+	</script>
+	</body>
+</html>
