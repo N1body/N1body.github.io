@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>消消乐</title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			#myCanvas{
+				border: 1px solid black;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas"></canvas>
+	</body>
+	
+	<script type="text/javascript">
+		var cvs = document.getElementById("myCanvas");
+		var ctx = cvs.getContext("2d");
+		
+		var N = 10;	// N * N 个圆
+		var M = 6;  // M个颜色随机分配
+		cvs.width = 30 * N + 10;
+		cvs.height = cvs.width;
+		
+		var colorArr = []; // 保存颜色
+		var arcArr = [];  // 二维数组 保存圆的横纵坐标及颜色
+		var visit = [];  // 标记
+		var change = []; // 保存需要交换的无同色的圆
+		
+		setColor();  // 设置颜色
+		drawArc();  // 画圆
+		arcClick();// 点击圆消除
+
+		
+
+		// 点击圆消除事件
+		function arcClick(){
+			cvs.onclick = function(event){
+				var x = event.clientX;
+				var y = event.clientY;
+				var arcNum = selectArc(x,y);
+				if(arcNum.x != -1){
+					var color = arcArr[arcNum.x][arcNum.y].c;
+					if(juge(arcNum,color)){
+						if(color!="rgb(255,255,255)") change.push(arcNum);
+						if(change.length%2 == 0){
+							changeColor();
+						}
+					}
+					else{
+						clearArc(arcNum,color);
+						move();
+					}
+				}
+			}
+		}	
+		
+		// 获取当前点击的圆在二维数组arcArr中的下标
+		function selectArc(x,y){
+			for(var i=0; i<arcArr.length; i++){
+				for(var j=0; j<arcArr[i].length; j++)
+				if(Math.abs(x-arcArr[i][j].x)<=10 && Math.abs(y-arcArr[i][j].y)<=10){
+					return {x:i,y:j};
+				}
+			}
+			return {x:-1,y:-1};
+		}
+		
+		// 清除上下左右所有同色圆（若上下左右没有一个圆满足，则不清除）
+		function clearArc(arcNum,color){
+			if(color=="rgb(255,255,255)") return;
+			visit[arcNum.x][arcNum.y] = 0;
+			
+			ctx.clearRect(arcArr[arcNum.x][arcNum.y].x-10,arcArr[arcNum.x][arcNum.y].y-10,20,20);
+			if(arcNum.x<arcArr.length-1 && visit[arcNum.x+1][arcNum.y] &&arcArr[arcNum.x+1][arcNum.y].c == color){
+				clearArc({x:arcNum.x+1, y:arcNum.y},color);
+			}
+			
+			if(arcNum.x>0 && visit[arcNum.x-1][arcNum.y] && arcArr[arcNum.x-1][arcNum.y].c == color){
+				clearArc({x:arcNum.x-1, y:arcNum.y},color);
+			}
+			if(arcNum.y<arcArr[arcNum.x].length-1 && visit[arcNum.x][arcNum.y+1] && arcArr[arcNum.x][arcNum.y+1].c == color){
+				clearArc({x:arcNum.x, y:arcNum.y+1},color);
+			}
+			if(arcNum.y>0 && visit[arcNum.x][arcNum.y-1] && arcArr[arcNum.x][arcNum.y-1].c == color){
+				clearArc({x:arcNum.x, y:arcNum.y-1},color);
+			}
+			arcArr[arcNum.x][arcNum.y].c = "rgb(255,255,255)";
+			visitInit();
+		}
+		
+		// 判断上下左右颜色是否存在相同
+		function juge(arcNum,color){
+			
+			if(arcNum.x<arcArr.length-1 && arcArr[arcNum.x+1][arcNum.y].c == color){
+				return false;
+			}
+			if(arcNum.x>0 && arcArr[arcNum.x-1][arcNum.y].c == color){
+				return false;
+			}
+			if(arcNum.y<arcArr[arcNum.x].length-1 && arcArr[arcNum.x][arcNum.y+1].c == color){
+				return false;
+			}
+			if(arcNum.y>0 && arcArr[arcNum.x][arcNum.y-1].c == color){
+				return false;
+			}
+			return true;
+		}
+		
+		// 每次清除完圆后将标记删除
+		function visitInit(){
+			for(var i=0; i<visit.length; i++){
+				for(var j=0; j<visit[i].length; j++){
+					visit[i][j] = 1;
+				}
+			}
+		}
+		
+		// 从下至上遍历所有白色圆
+		function move(){
+			for(var i=N-1; i>0; i--){
+				for(var j=0; j<N; j++){
+					if(arcArr[i][j].c=="rgb(255,255,255)"){
+						down(i,j);
+					}
+				}
+			}
+			reDraw();
+		}
+		
+		// 交换相邻圆的颜色
+		function changeColor(){
+			var x1 = change[change.length-1].x;
+			var y1 = change[change.length-1].y;
+			var x2 = change[change.length-2].x;
+			var y2 = change[change.length-2].y;
+			 
+			if(x1==x2 || y1==y2){
+				if(Math.abs(x1-x2)==1 || Math.abs(y1-y2)==1){
+					var t = arcArr[x1][y1].c;
+					arcArr[x1][y1].c = arcArr[x2][y2].c;
+					arcArr[x2][y2].c = t;
+					reDraw();
+				}
+			}
+		}
+		
+		// 将白色圆上方第一个有颜色的圆下移至最下方白色圆处
+		function down(x,y){
+			var i = x;
+			while(arcArr[i][y].c=="rgb(255,255,255)" && i>0) i--;
+			arcArr[x][y].c = arcArr[i][y].c;
+			ctx.clearRect(arcArr[i][y].x-10,arcArr[i][y].y-10,20,20);
+			arcArr[i][y].c = "rgb(255,255,255)";
+		}
+		
+		// 根据arcArr中所储存的所有坐标及配色重新绘画
+		function reDraw(){
+			ctx.clearRect(0,0,ctx.width,ctx.height)
+			for(var i=0; i<N; i++){
+				for(var j=0; j<N; j++){
+					ctx.beginPath();
+					ctx.arc((arcArr[i][j].x),(arcArr[i][j].y),10,0,2*Math.PI);
+					ctx.fillStyle = arcArr[i][j].c;
+					ctx.fill();
+				}
+			}
+		}
+		
+		
+		// 绘画具有六种颜色随机分配的圆
+		function drawArc(){
+			for(var i=0; i<N; i++){
+				var arr = [];
+				var visitArr = [];
+				for(var j=0; j<N; j++){
+					var color = selectColor();
+					ctx.beginPath();
+					ctx.arc((20+30*j),(20+30*i),10,0,2*Math.PI);
+					ctx.fillStyle = color;
+					ctx.fill();
+					arr.push({
+						x: 20+30*j,
+						y: 20+30*i,
+						c: color
+					})
+					visitArr.push(1);
+				}
+				arcArr.push(arr);
+				visit.push(visitArr);
+			}
+		}
+		
+		// 在选出的六种颜色中随机分配一种颜色出来
+		function selectColor(){
+			var num = Math.round(Math.random() * (M - 1));
+			return colorArr[num];
+		}
+		
+		// 选出六种随机颜色
+		function setColor(){
+			for(var i=0; i<M; i++){
+				colorArr.push(getColor());
+			}
+		}
+		
+		// 获取随机颜色
+		function getColor(){
+			var r = Math.round(Math.random() * 255);
+			var g = Math.round(Math.random() * 255);
+			var b = Math.round(Math.random() * 255);
+			return "rgb("+r+","+g+","+b+")";
+		}
+	</script>
+</html>
