@@ -25,37 +25,24 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <p>爬虫常用正则表达式：</p>
 <ol>
 <li><p><strong>指定开头，指定结尾：</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">&quot;background-image: url(https://image2.pearvideo.com/cont/20200428/cont-1671582-12370181.png);&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># \b开头字符.*?结尾字符\b</span></span><br><span class="line"></span><br><span class="line">res = re.search(<span class="string">r&quot;\bhttp.*?png\b&quot;</span>, str1)<span class="comment"># 或者res = re.search(r&quot;http(.*?)png&quot;,str1)</span></span><br><span class="line">print(res.group())</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li><strong>匹配所有整型数字</strong>：</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">inventory_count = <span class="string">&quot;库存5000&quot;</span></span><br><span class="line">res = re.search(<span class="string">&quot;\d+&quot;</span>, inventory_count)</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li><strong>匹配所有浮点数：</strong></li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">price = <span class="number">565656.23223</span>  </span><br><span class="line">price = re.search(<span class="string">&#x27;[-+]?[0-9]*\.?[0-9]+&#x27;</span>, price)</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li><strong>匹配无视空格和换行：</strong></li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">&quot;instrt into inswate&quot;</span>text_data = <span class="string">&quot;hjkshcsdk dsehfhk instrt      into inswate &quot;</span></span><br><span class="line">str1_list = str1.split(<span class="string">&quot; &quot;</span>)</span><br><span class="line">str2 = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> str1_list:</span><br><span class="line">     str2 = str2 + <span class="string">r&quot;%s(\s*)(?i)&quot;</span> % i</span><br><span class="line">     str3 = <span class="string">&quot;(?s)(?i)&quot;</span> + str2</span><br><span class="line">     response = re.search(str3.rstrip(<span class="string">&quot;(\s*)(?i)&quot;</span>), text_data)</span><br></pre></td></tr></table></figure>
-<ol start="5">
-<li><strong>匹配或者：</strong></li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#(png|jpg|jpeg) 就是或的关系</span></span><br><span class="line">images = re.search(<span class="string">r&quot;\bhttp.*?(png|jpg|jpeg)\b&quot;</span>, image)</span><br></pre></td></tr></table></figure>
-<ol start="6">
-<li><strong>匹配所有中文：</strong></li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">text1_list = re.findall(<span class="string">&#x27;[^\x00-\xff]&#x27;</span>,text1)</span><br></pre></td></tr></table></figure>
-<ol start="7">
-<li><strong>匹配小数或者整数：</strong></li>
-</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">&quot;background-image: url(https://image2.pearvideo.com/cont/20200428/cont-1671582-12370181.png);&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># \b开头字符.*?结尾字符\b</span></span><br><span class="line"></span><br><span class="line">res = re.search(<span class="string">r&quot;\bhttp.*?png\b&quot;</span>, str1)<span class="comment"># 或者res = re.search(r&quot;http(.*?)png&quot;,str1)</span></span><br><span class="line">print(res.group())</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>匹配所有整型数字</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">inventory_count = <span class="string">&quot;库存5000&quot;</span></span><br><span class="line">res = re.search(<span class="string">&quot;\d+&quot;</span>, inventory_count)</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>匹配所有浮点数：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">price = <span class="number">565656.23223</span>  </span><br><span class="line">price = re.search(<span class="string">&#x27;[-+]?[0-9]*\.?[0-9]+&#x27;</span>, price)</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>匹配无视空格和换行：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">&quot;instrt into inswate&quot;</span>text_data = <span class="string">&quot;hjkshcsdk dsehfhk instrt      into inswate &quot;</span></span><br><span class="line">str1_list = str1.split(<span class="string">&quot; &quot;</span>)</span><br><span class="line">str2 = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> str1_list:</span><br><span class="line">     str2 = str2 + <span class="string">r&quot;%s(\s*)(?i)&quot;</span> % i</span><br><span class="line">     str3 = <span class="string">&quot;(?s)(?i)&quot;</span> + str2</span><br><span class="line">     response = re.search(str3.rstrip(<span class="string">&quot;(\s*)(?i)&quot;</span>), text_data)</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>匹配或者：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#(png|jpg|jpeg) 就是或的关系</span></span><br><span class="line">images = re.search(<span class="string">r&quot;\bhttp.*?(png|jpg|jpeg)\b&quot;</span>, image)</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>匹配所有中文：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">text1_list = re.findall(<span class="string">&#x27;[^\x00-\xff]&#x27;</span>,text1)</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>匹配小数或者整数：</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">count_list = re.findall(<span class="string">&#x27;(\d+\.\d+|\d+)&#x27;</span>,desc1)</span><br></pre></td></tr></table></figure>
 <h2 id="3-bs4"><a href="#3-bs4" class="headerlink" title="3. bs4"></a>3. bs4</h2></li>
 </ol>
 <p>解析原理：</p>
 <ol>
-<li><p>实例化一个BeautifulSoup对象，并且将页面源码数据加载到该对象中</p>
-<ol start="2">
+<li>实例化一个BeautifulSoup对象，并且将页面源码数据加载到该对象中<ol start="2">
 <li> 通过调用BeautifulSoup对象中相关的属性或者方法进行标签定位和数据提取</li>
 </ol>
 </li>
