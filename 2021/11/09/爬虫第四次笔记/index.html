@@ -26,7 +26,8 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <p>爬虫常用正则表达式：</p>
 <ol>
 <li><p><strong>指定开头，指定结尾：</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">&quot;background-image: url(https://image2.pearvideo.com/cont/20200428/cont-1671582-12370181.png);&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># \b开头字符.*?结尾字符\b</span></span><br><span class="line"></span><br><span class="line">res = re.search(<span class="string">r&quot;\bhttp.*?png\b&quot;</span>, str1)<span class="comment"># 或者res = re.search(r&quot;http(.*?)png&quot;,str1)</span></span><br><span class="line">print(res.group())</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">str1 = <span class="string">&quot;background-image: url(https://image2.pearvideo.com/cont/20200428/cont-1671582-12370181.png);&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># \b开头字符.*?结尾字符\b</span></span><br><span class="line"></span><br><span class="line">res = re.search(<span class="string">r&quot;\bhttp.*?png\b&quot;</span>, str1)<span class="comment"># 或者res = re.search(r&quot;http(.*?)png&quot;,str1)</span></span><br><span class="line">print(res.group())</span><br></pre></td></tr></table></figure>
+</li>
 <li><p><strong>匹配所有整型数字</strong>：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">inventory_count = <span class="string">&quot;库存5000&quot;</span></span><br><span class="line">res = re.search(<span class="string">&quot;\d+&quot;</span>, inventory_count)</span><br></pre></td></tr></table></figure></li>
 <li><p><strong>匹配所有浮点数：</strong></p>
@@ -47,7 +48,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 <li> 通过调用BeautifulSoup对象中相关的属性或者方法进行标签定位和数据提取</li>
 </ol>
 <p>环境安装：pip install bs4</p>
-<pre><code>    pip install lxml</code></pre>
+<p>​                    pip install lxml</p>
 <p>实例化BeautifulSoup对象： from bs4 import BeautifulSoup</p>
 <p>对象的实例化：</p>
 <ol>
