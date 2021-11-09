@@ -21,6 +21,7 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 </ol>
 <a id="more"></a>
 
+
 <h2 id="2-正则表达式"><a href="#2-正则表达式" class="headerlink" title="2. 正则表达式"></a>2. 正则表达式</h2><p>解析原理：通过正则表达式直接匹配html中的数据获取想要的数据信息</p>
 <p>爬虫常用正则表达式：</p>
 <ol>
@@ -42,13 +43,11 @@ ga('send', 'pageview');</script><meta http-equiv="Cache-Control" content="no-tra
 </ol>
 <p>解析原理：</p>
 <ol>
-<li>实例化一个BeautifulSoup对象，并且将页面源码数据加载到该对象中<ol start="2">
+<li> 实例化一个BeautifulSoup对象，并且将页面源码数据加载到该对象中</li>
 <li> 通过调用BeautifulSoup对象中相关的属性或者方法进行标签定位和数据提取</li>
 </ol>
-</li>
-</ol>
 <p>环境安装：pip install bs4</p>
-<p>​                     pip install lxml</p>
+<pre><code>    pip install lxml</code></pre>
 <p>实例化BeautifulSoup对象： from bs4 import BeautifulSoup</p>
 <p>对象的实例化：</p>
 <ol>
